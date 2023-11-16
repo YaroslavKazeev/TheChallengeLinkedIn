@@ -13,6 +13,11 @@
       .col-centered {
         text-align: center;
       }
+      #hint_id_username, #hint_id_password1 {
+        display: none;
+      }
+      
+
     </style>
   </head>
 
@@ -21,15 +26,57 @@
 <div class="row">
   <div class="col-md-6">
     <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
+      {% csrf_token %} {% for field in form %}
+      <div class="form-group">
+        {{ field.label_tag }}
+        <input
+          type="{% if 'password' in field.label_tag %}password{% else %}text{% endif %}"
+          name="{{ field.html_name }}"
+          class="form-control"
+          maxlength="{% if 'username' in field.label_tag %}150{% endif %}"
+          id="{{ field.id_for_label }}"
+          required
+        />
+      </div>
+      {% if field.errors %} {% for error in field.errors %}
+      <p style="font-size: 13px;">
+        {{ error|escape }}
+      </p>
+      {% endfor %} {% endif %} {% endfor %}
       <button type="submit">Sign up</button>
     </form>
   </div>
   <div class="col-md-6">
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.username.label_tag }}
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            maxlength="150"
+            id="id_username"
+            required
+          />
+        </div>
+        <div class="form-group">
+          {{ form.password.label_tag }}
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            id="id_password"
+            required
+          />
+        </div>
+        {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+        <p style="font-size: 13px;">
+          {{ error|escape }}
+        </p>
+        {% endfor %} {% endif %}
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
       <button type="submit">Sign in</button>
     </form>
   </div>
