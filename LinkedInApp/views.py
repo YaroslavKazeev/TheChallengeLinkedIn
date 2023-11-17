@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm, SignInForm
 from .models import Profile
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 def signup_view(request):
     if request.method == 'POST':
@@ -21,9 +22,14 @@ def signup_view(request):
                     Profile.objects.create(user=user, job_title=job_title)
                     return redirect('members')
 
-
         elif 'login_form' in request.POST:
-            print("Sign-in")
+            login_form = SignInForm(request, data=request.POST)
+            if login_form.is_valid():
+                username = login_form.cleaned_data.get('username')
+                password = login_form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                return redirect('members')
 
         else:
             register_form = SignUpForm()
