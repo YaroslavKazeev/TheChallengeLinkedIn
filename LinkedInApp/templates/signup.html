@@ -1,42 +1,35 @@
 <html>
-  <head>
-    <title>SignUp&In</title>
- 
-    <!-- CSS only -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
-    <style>
-      .col-centered {
-        text-align: center;
-      }
-      #hint_id_username, #hint_id_password1 {
-        display: none;
-      }
-      
 
-    </style>
-  </head>
+<head>
+  <title>SignUp&In</title>
+
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <style>
+    .col-centered {
+      text-align: center;
+    }
+
+    #hint_id_username,
+    #hint_id_password1 {
+      display: none;
+    }
+  </style>
+</head>
 
 
-<h1>Welcome to LinkedIn! A social network for professionals</h1>
+<h3>Welcome to LinkedIn! A social network for professionals</h3>
 <div class="row">
   <div class="col-md-6">
+    <p>Sign Up</p>
     <form method="post" id="signup_form" name="signup_form">
       {% csrf_token %} {% for field in register_form %}
       <div class="form-group">
         {{ field.label_tag }}
-        <input
-          type="{% if 'password' in field.label_tag %}password{% else %}text{% endif %}"
-          name="{{ field.html_name }}"
-          class="form-control"
-          maxlength="{% if 'username' in field.label_tag %}150{% endif %}"
-          id="{{ field.id_for_label }}"
-          required
-        />
+        <input type="{% if 'password' in field.label_tag %}password{% else %}text{% endif %}"
+          name="{{ field.html_name }}" class="form-control"
+          maxlength="{% if 'username' in field.label_tag %}150{% endif %}" id="{{ field.id_for_label }}" required />
       </div>
       {% if field.errors %} {% for error in field.errors %}
       <p style="font-size: 13px;">
@@ -49,35 +42,23 @@
 
 
   <div class="col-md-6">
-      <form method="post" id="login_form" name="login_form">
-        {% csrf_token %}
-        <div class="form-group">
-          {{ login_form.username.label_tag }}
-          <input
-            type="text"
-            name="username"
-            class="form-control"
-            maxlength="150"
-            id="id_username"
-            required
-          />
-        </div>
-        <div class="form-group">
-          {{ login_form.password.label_tag }}
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            id="id_password"
-            required
-          />
-        </div>
-        {% if login_form.non_field_errors %} {% for error in login_form.non_field_errors %}
-        <p style="font-size: 13px;">
-          {{ error|escape }}
-        </p>
-        {% endfor %} {% endif %}
-        <button type="submit" name="login_form" class="btn btn-primary" for="login_form">Sign in</button>
+    <p>Sign In</p>
+    <form method="post" id="login_form" name="login_form">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ login_form.username.label_tag }}
+        <input type="text" name="username" class="form-control" maxlength="150" id="id_username" required />
+      </div>
+      <div class="form-group">
+        {{ login_form.password.label_tag }}
+        <input type="password" name="password" class="form-control" id="id_password" required />
+      </div>
+      {% if login_form.non_field_errors %} {% for error in login_form.non_field_errors %}
+      <p style="font-size: 13px;">
+        {{ error|escape }}
+      </p>
+      {% endfor %} {% endif %}
+      <button type="submit" name="login_form" class="btn btn-primary" for="login_form">Sign in</button>
     </form>
   </div>
 </div>
