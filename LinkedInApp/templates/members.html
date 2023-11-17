@@ -1,0 +1,11 @@
+<h1>LinkedIn Users</h1> <a href="{% url 'logout' %}">Log out</a>
+<p>Welcome, {{ user.username }} 
+
+    </p>
+<ul>
+{% for user in users %}
+
+
+    <li>{{ user.username }} <a href="{% url 'profile' user.id %}">View Profile</a></li>
+{% endfor %}
+</ul>
