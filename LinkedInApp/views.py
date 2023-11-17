@@ -13,15 +13,17 @@ def signup_view(request):
                 job_title = register_form.cleaned_data.get('job_title')
                 if any(char.isdigit() for char in name) or any(char.isdigit() for char in job_title):
                     register_form.add_error('username', 'Name and job title should not contain numbers')
+                    login_form = SignInForm(request)
                 if len(name) < 4:
                     register_form.add_error('username', 'Name should be at least 4 characters long')
+                    login_form = SignInForm(request)
                 if len(job_title) < 14:
                     register_form.add_error('job_title', 'Job title should be at least 14 characters long')
+                    login_form = SignInForm(request)
                 if not register_form.errors:
                     user = register_form.save()
                     Profile.objects.create(user=user, job_title=job_title)
                     return redirect('members')
-
         elif 'login_form' in request.POST:
             login_form = SignInForm(request, data=request.POST)
             if login_form.is_valid():
@@ -30,7 +32,6 @@ def signup_view(request):
                 user = authenticate(username=username, password=password)
                 login(request, user)
                 return redirect('members')
-
         else:
             register_form = SignUpForm()
             login_form = SignInForm(request)
